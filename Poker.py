@@ -7,6 +7,8 @@
 
 # Representing Hands = ['JS', 'JD', '2Q'], or  [(11, 'Q'), (9, 'D')]   sets are good if we have a single deck, but when we have multiple deck, we can't have duplicates with sets
 
+# Our implementation for a Hand [(11, 'Q'), (9, 'D')]    List of tuples containing Rank, Suit
+
 # Hands is a list
 def poker(hands):
     "Return the best hand: poker([hand,...]) => hand"
@@ -43,7 +45,8 @@ def hand_rank(hand):
     
 def card_ranks(cards):
     """Return a list of the ranks, sorted with higher first."""
-    ranks = [r for r,s in cards]
+    ranks = ["--23456789TJQKA".index(r) for r,s in cards]  # Each card contains a rank and a suit,  hand/cards == [(11, 'Q'), (9, 'D')] 
+    # Using a "Rank Strings Array" (i.e using an array to represent the rank strings)  to index it for the ranks
     ranks.sort(reverse=True)
     return ranks
     
