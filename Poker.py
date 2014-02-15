@@ -20,7 +20,7 @@ def hand_rank(hand):
     >> hand_rank('2Q')
     2
     """
-    ranks = card_ranks(hand)
+    ranks = card_ranks(hand)  # ranks is a list of all the ranks
     if straight(hand) and flush(hand):
         return (8, max(ranks)) # 2 3 4 5 6  (8, 6)  6 7 8 9 T  (8, 10)
     elif kind(4, ranks):  # Here kind(4, ranks)  is used to return a bolean value
