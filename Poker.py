@@ -14,32 +14,32 @@ def poker(hands):
     
     
 def hand_rank(hand):
-    """ Returns the rank of the particular hand.
+    """ Returns the rank of the particular hand.  Tuple consists of (major-rank, tie-breaker)
     >>> hand_rank(['J5'])
     5
     >> hand_rank('2Q')
     2
     """
-    ranks = card_ranks(hand)  # ranks is a list of all the ranks
-    if straight(hand) and flush(hand):
+    ranks = card_ranks(hand)  # ranks is a list of all the ranks. A sorted list of ranks is returned
+    if straight(hand) and flush(hand):      # Straight flush
         return (8, max(ranks)) # 2 3 4 5 6  (8, 6)  6 7 8 9 T  (8, 10)
     elif kind(4, ranks):  # Here kind(4, ranks)  is used to return a bolean value
         # kind(4, ranks)  returns the int when true, returns false if not true (used as boolean)
         return (7, kind(4, ranks), kind(1, ranks)) # 9 9 9 9 3  (7, 9, 3)   9 9 9 9 5 (7, 9, 5)
     elif kind(3, ranks) and kind(2, ranks):        # full house
-           return # your code here
+           return (6, kind(3, ranks), kind(2, ranks))
     elif flush(hand):                              # flush
-       return # your code here
+       return (5, ranks)
     elif straight(ranks):                          # straight
-       return # your code here
+       return (4, max(ranks))
     elif kind(3, ranks):                           # 3 of a kind
-       return # your code here
+       return (3, kind(3, ranks), ranks)
     elif two_pair(ranks):                          # 2 pair
-       return # your code here
+       return (2, two_pair(ranks), ranks)
     elif kind(2, ranks):                           # kind
-       return # your code here
+       return (1, kind(2, ranks), ranks)
     else:                                          # high card
-           return # your code here
+           return (0, ranks)
     
 def test():
     "Test cases for the functions in poker program"
@@ -52,7 +52,9 @@ def test():
     tp = "JS JD 3D 3H KH".split() # Two of a kind
     p  = "2S 2D JC KH QS".split() # A Pair
     n  = "7C 5S 8H 9S 4C".split() # Nothing, or Highest card
-    
+    assert card_ranks(sf) == [10, 9, 8, 7, 6]
+    assert card_ranks(fk) == [9, 9, 9, 9, 7]
+    assert card_ranks(fh) == [10, 10, 10, 7, 7]
     assert poker([sf, fk, fh]) == sf
     assert poker([fk, fh]) == fk
     assert poker([fh, fh]) == fh

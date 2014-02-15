@@ -34,7 +34,7 @@ def hand_rank(hand):
     elif kind(3, ranks):                           # 3 of a kind
         return (3, kind(3, ranks), ranks.sort())
     elif two_pair(ranks):                          # 2 pair
-        return (2, kind(2, ranks), ranks.sort())
+        return (2, two_pair(ranks), ranks.sort())
     elif kind(2, ranks):                           # kind
         return (1, kind(2, ranks), ranks.sort)
     else:                                          # high card
@@ -63,7 +63,9 @@ def test():
     tp = "JS JD 3D 3H KH".split() # Two of a kind
     p  = "2S 2D JC KH QS".split() # A Pair
     n  = "7C 5S 8H 9S 4C".split() # Nothing, or Highest card
-    
+    assert card_ranks(sf) == [10, 9, 8, 7, 6]
+    assert card_ranks(fk) == [9, 9, 9, 9, 7]
+    assert card_ranks(fh) == [10, 10, 10, 7, 7]
     assert poker([sf, fk, fh]) == sf
     assert poker([fk, fh]) == fk
     assert poker([fh, fh]) == fh
