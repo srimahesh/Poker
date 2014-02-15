@@ -41,6 +41,25 @@ def hand_rank(hand):
         ranks.sort()
         return (0, ranks[0], ranks[1], ranks[2], ranks[3], ranks[4])
 
+def card_ranks(cards):
+    "Return a list of the ranks, sorted with higher first."
+    ranks = [map(r) for r,s in cards]
+    ranks.sort(reverse=True)
+    return ranks
+
+def map(r):
+    if r == 'T'
+        return 10
+    elif r == 'J'
+        return 11
+    elif r == 'Q'
+        return 12
+    elif r == 'k'
+        return 13
+    elif r == 'A'
+        return 14
+    else
+        return r
           
            
 def sort_ranks(ranks):
