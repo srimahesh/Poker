@@ -9,9 +9,20 @@
 
 # Hands is a list
 def poker(hands):
-    "Return the best hand: poker([hand,...]) => hand"
-    return max(hands, key=hand_rank)
-    
+    "Return the best hand: poker([hand,...]) => [hand,..]"
+    return allmax(hands, key=hand_rank)
+
+def allmax(iterable, key=None):
+    "Return a list of all items equal to the max of the iterable."
+    # Your code here.
+    list = []
+    # return [list.append(a) if iterable.next == max(iterable) for a in iterable.next]
+    a = 1
+    while a: 
+        a = iterable.next()
+        if a == max(iterable):
+            list.append(a)
+    return a    
     
 def hand_rank(hand):
     """ Returns the rank of the particular hand.
@@ -167,6 +178,6 @@ def test():
     
 print test()
 
-    
-
 # print max([3, 4, 5, 0]), max([3, 4, -5, 0], key=abs)
+
+

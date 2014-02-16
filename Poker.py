@@ -11,10 +11,21 @@
 
 # Hands is a list
 def poker(hands):
-    "Return the best hand: poker([hand,...]) => hand"
-    return max(hands, key=hand_rank)
+    "Return the best hand: poker([hand,...]) => [hand,..]"
+    return allmax(hands, key=hand_rank)
     
-    
+def allmax(iterable, key=None):
+    "Return a list of all items equal to the max of the iterable"
+    result, maxval = [], None
+    key = key or (lambda x: x)
+    for x in iterable:
+        xval = key(x)
+        if (not result) or (xval > maxval):
+            result, maxval = [x], xval
+        elif xval == maxval:
+            result.append(x)
+    return result
+
 def hand_rank(hand):
     """ Returns the rank of the particular hand.  Tuple consists of (major-rank, tie-breaker)
     >>> hand_rank(['J5'])
