@@ -48,7 +48,7 @@ def card_ranks(cards):
     ranks = ["--23456789TJQKA".index(r) for r,s in cards]  # Each card contains a rank and a suit,  hand/cards == [(11, 'Q'), (9, 'D')] 
     # Using a "Rank Strings Array" (i.e using an array to represent the rank strings)  to index it for the ranks
     ranks.sort(reverse=True)
-    return ranks
+    return [5, 4, 3, 2, 1] if (ranks == [14, 5, 3, 2, 1]) else ranks
     
 def straight(ranks):
     "Return True if the ordered ranks form a 5-card straight"
@@ -88,6 +88,13 @@ def test():
     tp = "5S 5D 9H 9C 6S".split() # Two of a kind
     p  = "2S 2D JC KH QS".split() # A Pair
     n  = "7C 5S 8H 9S 4C".split() # Nothing, or Highest card
+    
+    s1 = "AS 2S 3S 4S 5C".split() # A-5 straight
+    s2 = "2C 3C 4C 5S 6S".split() # 2-6 Straight
+    ah = "AS 2S 3S 4S 6C".split() # A high
+    sh = "s@ 3S 4S 6C 7D".split() # 7 high
+
+    assert poker([s1, s2, ah, sh]) == s2
     fkranks = card_ranks(fk)
     tpranks = card_ranks(tp)
     assert kind(4, fkranks) == 9
