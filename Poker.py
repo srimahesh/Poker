@@ -50,6 +50,32 @@ def card_ranks(cards):
     ranks.sort(reverse=True)
     return ranks
     
+def straight(ranks):
+    "Return True if the ordered ranks form a 5-card straight"
+    return (max(ranks) - min(ranks) == 4) and len(set(ranks)) == 5
+
+def flush(hand):
+    "Return Ture if all the cards have the same suit"
+    suits = [s for r,s in hand]
+    return len(set(suits)) == 1
+    
+def kind(n, ranks):
+    """ REturn the first rank that this hand has exaclty n of.
+    Return None if there is no n-of-a-kind in the hand"""
+    for r in ranks:
+        if ranks.count(r) == n: return r
+    return None
+    
+def two_pair(ranks):
+    """If there are two pair, return the two ranks as a 
+    tuple: (highest, lowerst); otherwise return None."""
+    pair = kind(2, ranks)  # Ranks are ordered, so this return the highest pair(if present)
+    lowpair = kind(2, list(reversed(ranks)))  # ranks.reverse()  also works
+    if pair and (lowpair != pair):
+        return (pair, lowpair)
+    else:
+        return None
+    
     
 def test():
     "Test cases for the functions in poker program"
@@ -59,9 +85,21 @@ def test():
     st = "JS TS 9S 8S 7S".split() # Straight
     fl = "TD 8D 5D 3D 2D".split() # Flush 
     tk = "7C 7S 7H 5C 2D".split() # Three of a Kind
-    tp = "JS JD 3D 3H KH".split() # Two of a kind
+    tp = "5S 5D 9H 9C 6S".split() # Two of a kind
     p  = "2S 2D JC KH QS".split() # A Pair
     n  = "7C 5S 8H 9S 4C".split() # Nothing, or Highest card
+    fkranks = card_ranks(fk)
+    tpranks = card_ranks(tp)
+    assert kind(4, fkranks) == 9
+    assert kind(3, fkranks) == None
+    assert kind(2, fkranks) == None
+    assert kind(1, fkranks) == 7
+    assert two_pair(fkranks) == None
+    assert two_pair(tpranks) == (9, 5)
+    assert straight([9, 8, 7, 6, 5]) == True
+    assert straight([9, 8, 8, 6, 5]) == False
+    assert flush(sf) == True
+    assert flush(fk) == False
     assert card_ranks(sf) == [10, 9, 8, 7, 6]
     assert card_ranks(fk) == [9, 9, 9, 9, 7]
     assert card_ranks(fh) == [10, 10, 10, 7, 7]
@@ -76,7 +114,7 @@ def test():
     assert hand_rank(st) == (5, 11)
     assert hand_rank(fl) == (4, [10, 8, 5, 3, 2])
     assert hand_rank(tk) == (3, 7, [7, 7, 7, 5, 2])
-    assert hand_rank(tp) == (2, 11, 3, [13, 11, 11, 3, 3]) # King is the highest to sort the list high -> low                                                                                                                                        
+    assert hand_rank(tp) == (2, 9, 5, [9, 9, 6, 5, 5]) # King is the highest to sort the list high -> low                                                                                                                                        
     assert hand_rank(p) == (1, 2, [13, 12, 11, 2, 2])
     assert hand_rank(n) == (0, 9, 8, 7, 5, 4)
     

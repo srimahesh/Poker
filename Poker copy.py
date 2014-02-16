@@ -48,20 +48,79 @@ def card_ranks(cards):
     return ranks
 
 def map(r):
-    if r == 'T'
+    if r == 'T':
         return 10
-    elif r == 'J'
+    elif r == 'J':
         return 11
-    elif r == 'Q'
+    elif r == 'Q':
         return 12
-    elif r == 'k'
+    elif r == 'K':
         return 13
-    elif r == 'A'
+    elif r == 'A':
         return 14
-    else
+    else:
         return r
+        
+        
+        
+def card_ranks(cards):
+    "Return a list of the ranks, sorted with higher first."
+    ranks = [map(r) for r,s in cards]
+    ranks.sort(reverse=True)
+    return ranks
+
+def map(r):
+    if r == 'T':
+        return '10'
+    elif r == 'J':
+        return '11'
+    elif r == 'Q':
+        return '12'
+    elif r == 'K':
+        return '13'
+    elif r == 'A':
+        return '14'
+    else:
+        return r
+        
+        
+def straight(ranks):
+    "Return True if the ordered ranks form a 5-card straight"
+    for i in range(0, 4):
+        if ranks[i] - 1 != ranks[i + 1]:
+            return False
+    return True
+    
+def flush(hand):
+    "REturn True if all the cards have the same suit"
+    suits = [s for r,s in hand]
+    for i in range(0, 4):
+        if suits[i] != suits[i + 1]:
+            return False
+    return True
           
-           
+### Should use the built-in funcitons more effectively
+def kind(n, ranks):
+    """ REturn the first rank that this hand has exaclty n of.
+    Return None if there is no n-of-a-kind in the hand"""
+    for r in ranks:
+        if ranks.count(r) == n: return r
+    return None
+    
+def two_pair(ranks):
+    """If there are two pair, return the two ranks as a
+    tuple: (highest, lowest); otherwise return None."""
+    # Your code here.
+    two_pair = []
+    set_ranks = set(ranks)
+    for r in set_ranks:
+        if ranks.count(r) == 2: two_pair.append(r)
+    
+    if len(two_pair) == 2: 
+        two_pair.sort(reverse=True)
+        return (two_pair[0], two_pair[1])
+    return None
+    
 def sort_ranks(ranks):
     """ Returns a sorted_list of the ranks
     >>> sort_ranks([10, 15, 2, 4, 5])
@@ -82,6 +141,10 @@ def test():
     tp = "JS JD 3D 3H KH".split() # Two of a kind
     p  = "2S 2D JC KH QS".split() # A Pair
     n  = "7C 5S 8H 9S 4C".split() # Nothing, or Highest card
+    assert straight([9, 8, 7, 6, 5]) == True
+    assert straight([9, 8, 8, 6, 5]) == False
+    assert flush(sf) == True
+    assert flush(fk) == False
     assert card_ranks(sf) == [10, 9, 8, 7, 6]
     assert card_ranks(fk) == [9, 9, 9, 9, 7]
     assert card_ranks(fh) == [10, 10, 10, 7, 7]
