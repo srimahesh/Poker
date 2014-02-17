@@ -35,28 +35,28 @@ def hand_rank(hand):
     5
     >> hand_rank('2Q')
     2
+
+    # count is the count of each rank; ranks lists corresponding ranks
+    # E.g. '7 T 7 9 7' => count = (3, 1, 1); ranks = (7, 10, 9)
     """
-    ranks = card_ranks(hand)  # ranks is a list of all the ranks. A sorted list of ranks is returned
-    if straight(hand) and flush(hand):      # Straight flush
-        return (8, max(ranks)) # 2 3 4 5 6  (8, 6)  6 7 8 9 T  (8, 10)
-    elif kind(4, ranks):  # Here kind(4, ranks)  is used to return a bolean value
-        # kind(4, ranks)  returns the int when true, returns false if not true (used as boolean)
-        return (7, kind(4, ranks), kind(1, ranks)) # 9 9 9 9 3  (7, 9, 3)   9 9 9 9 5 (7, 9, 5)
-    elif kind(3, ranks) and kind(2, ranks):        # full house
-        return (6, kind(3, ranks), kind(2, ranks))
-    elif flush(hand):                              # flush
-        return (5, ranks)
-    elif straight(ranks):                          # straight
-        return (4, max(ranks))
-    elif kind(3, ranks):                           # 3 of a kind
-        return (3, kind(3, ranks), ranks)
-    elif two_pair(ranks):                          # 2 pair
-        return (2, two_pair(ranks), ranks)
-    elif kind(2, ranks):                           # kind
-        return (1, kind(2, ranks), ranks)
-    else:                                          # high card
-        return (0, ranks)
-    
+    groups = group(['--23456789TJQKA'.index(r) for r,s in hand])
+    counts, ranks = unzip(groups)
+    if ranks == (14, 5, 4, 3, 2):
+        ranks = (5, 4, 3, 2, 1)
+    straight = len(ranks) == 5 and max(ranks)-min(ranks) == 4
+    flush = len(set([s for r,s in hand])) == 1
+    return max(count_rankings[counts], 4*straight + 5*flush), ranks
+
+count_rankings = {(5,): 10, (4,1): 7, (3, 2): 6, (3, 1, 1): 3, (2, 2, 1): 2, 
+                (2, 1, 1, 1): 1, (1, 1, 1, 1, 1): 0}
+
+def group(items):
+    "Return a list of [(count, x)...], highest count first, then highest x first."
+    groups = [(items.count(x), x) for x in set(items)]    #  [((3,2), (1, 2)) ...]
+    return sorted(groups, reverse=True)
+
+def unzip(pairs): return zip(*pairs)  # (3, 1, 1), (7, 10, 9) ...
+
 def card_ranks(cards):
     """Return a list of the ranks, sorted with higher first."""
     ranks = ["--23456789TJQKA".index(r) for r,s in cards]  # Each card contains a rank and a suit,  hand/cards == [(11, 'Q'), (9, 'D')] 

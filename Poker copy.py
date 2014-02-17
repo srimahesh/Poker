@@ -8,6 +8,9 @@
 # Representing Hands = ['JS', 'JD', '2Q'], or  [(11, 'Q'), (9, 'D')]   sets are good if we have a single deck, but when we have multiple deck, we can't have duplicates with sets
 
 # Hands is a list
+
+import random # this will be a useful library for shuffling
+
 def poker(hands):
     "Return the best hand: poker([hand,...]) => [hand,..]"
     return allmax(hands, key=hand_rank)
@@ -52,27 +55,7 @@ def hand_rank(hand):
         ranks.sort()
         return (0, ranks[0], ranks[1], ranks[2], ranks[3], ranks[4])
 
-def card_ranks(cards):
-    "Return a list of the ranks, sorted with higher first."
-    ranks = [map(r) for r,s in cards]
-    ranks.sort(reverse=True)
-    return ranks
 
-def map(r):
-    if r == 'T':
-        return 10
-    elif r == 'J':
-        return 11
-    elif r == 'Q':
-        return 12
-    elif r == 'K':
-        return 13
-    elif r == 'A':
-        return 14
-    else:
-        return r
-        
-        
         
 def card_ranks(cards):
     "Return a list of the ranks, sorted with higher first."
@@ -179,5 +162,21 @@ def test():
 print test()
 
 # print max([3, 4, 5, 0]), max([3, 4, -5, 0], key=abs)
+
+
+# This builds a deck of 52 cards. If you are unfamiliar
+# with this notation, check out Andy's supplemental video
+# on list comprehensions (you can find the link in the 
+# Instructor Comments box below).
+
+mydeck = [r+s for r in '23456789TJQKA' for s in 'SHDC'] 
+
+def deal(numhands, n=5, deck=mydeck):
+    """deals numhands hands with n cards each."""
+    # Deck consists of  ['2S', ..]     with random methods get one card randomly  2C  
+    # numhands == # of players      hand == n random cards
+    random.shuffle(mydeck)
+    hands = [random.sample(mydeck, 1)  for _ in numhands for _ in n]
+    return hands
 
 
